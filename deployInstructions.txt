@@ -1,0 +1,36 @@
+1. Find a node that we connect to (e.g. Speedy Nodes which is free on Moralis) https://admin.moralis.io/speedyNodes
+2. Get the node URL e.g. (https://speedy-nodes-nyc.moralis.io/6a8709ed50ad0de3888dfb79/eth/ropsten)
+3. Go to truffle-config.js file (refer to that file for more details)
+4. We will need HDWalletProvider (npm install @truffle/hdwallet-provider) which is our wallet and mnemonic which is our seedphrase.
+5. Under network:{...} we also need to input that network. in this case it will be ropsten. 
+6. We also need to create a secret.json file in our root level.  This will be our secret key and we must ensure to add it to .gitignore.
+This is what should be in secret.json
+    {
+        "secret": "....."
+    }
+7. We need a mnemonic, so we can generate one using "npx mnemonics" in the terminal. Copy the seed phrase in the secret.json file 
+8. connect to ropsten network and get account address:
+// allows us to connect to the ropsten
+truffle console --network ropsten
+//shows the accounts in the wallet
+await web3.eth.getAccounts()
+//check the balance of the first account (in this case it is 0x27fab0178B029653C520C12CE5e14d401a80C7a9)   => should return 0
+// we will have 0 eth, hence, we will need to get ETH (can get it from a faucet)
+await web3.eth.getBalance("0x27fab0178B029653C520C12CE5e14d401a80C7a9")
+9. Get test ropsten eth from a faucet (copy paste the address into the faucet) [or send the network asset to your account]
+10. go back to the terminal (should still be conencted to ropsten) and deploy. 
+// allows us to connect to the ropsten if not done
+truffle console --network ropsten
+// check balance; should now not be 0
+await web3.eth.getBalance("0x27fab0178B029653C520C12CE5e14d401a80C7a9")
+// migrate the contract before deploying (need to do migrate --reset if we migrated before)
+// (ensure also in ropsten)i.e. console should be truffle(ropsten)>
+// this will take significantly longer because miners need to mine blocks first. 
+migrate 
+
+11. Once that is done, we can check whether the contract was deployed. Copy the contrac address (in the terminal)
+(in this case it is 0x2Cb24424B71CaBc08F12985AE07e100580eFeBe4) then go to ropsten explorer (https://ropsten.etherscan.io/)
+and copy paste the contract 
+
+--> dex contract: 0x2Cb24424B71CaBc08F12985AE07e100580eFeBe4
+token contract: 0x9D3f71eFDe8FDCe883F218287Cf3ed586B0D7F76
